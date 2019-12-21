@@ -21,6 +21,8 @@ public abstract class Hero {
 
     public int backstabCount;
     public int totalDamage;
+    public int magicDamage;
+    public int physicalDamage;
     public float raceMultiplierDmg;
     public float landMultiplierDmg = 1.0f;
     public int hp;
@@ -72,13 +74,16 @@ public abstract class Hero {
     }
 
     public final void calculateDmgFirstAttack() {
-        totalDamage = totalDamage + Math.round((firstAbilityDmg + firstAbilityDmgScaling * level)
+        physicalDamage = Math.round((firstAbilityDmg + firstAbilityDmgScaling * level)
                 * raceMultiplierDmg * landMultiplierDmg * critickAttack);
     }
 
     public final void calculateDmgSecondAttack() {
-        totalDamage = totalDamage + Math.round((secondAbilityDmg + secondAbilityDmgScaling * level)
+        physicalDamage = physicalDamage + Math.round((secondAbilityDmg + secondAbilityDmgScaling * level)
                 * raceMultiplierDmg * landMultiplierDmg);
+    }
+    public final void calculateTotalDamage(){
+        totalDamage = physicalDamage + magicDamage;
     }
 
     public final void setExperience(final int opponentLevel) {

@@ -11,9 +11,7 @@ public class Arena {
 
         p.hp -= opponent.totalDamage;
         opponent.hp -= p.totalDamage;
-        //TODO sa vad de ce nu merge sa sterg totalDamage = 0;
-        p.totalDamage = 0;
-        opponent.totalDamage = 0;
+
         if (opponent.hp > 0 && p.hp <= 0 && !p.deadFromDot) {
             opponent.setExperience(p.getLevel());
         }
@@ -30,5 +28,7 @@ public class Arena {
         p.raceMultiplierDmg = opponent.isAttackedBy(p.secondAbility);
         p.applySecondAbility(opponent);
         p.calculateDmgSecondAttack();
+
+        p.calculateTotalDamage();
     }
 }

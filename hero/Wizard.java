@@ -36,7 +36,7 @@ public class Wizard extends Hero {
     @Override
     public final void applyFirstAbility(final Hero opponent) {
         float hpPercent = Constants.DRAIN_PRECENT + Constants.DRAIN_PRECENT_SCALE * getLevel();
-        totalDamage = (int) Math.round(hpPercent * raceMultiplierDmg
+        magicDamage = (int) Math.round(hpPercent * raceMultiplierDmg
                 * Math.min(Constants.DRAIN_MAX_PROCENT * opponent.maxHp, opponent.hp)
                 * landMultiplierDmg);
     }
@@ -83,7 +83,7 @@ public class Wizard extends Hero {
         player.totalDamage = player.totalDamage +  Math.round((player.secondAbilityDmg
                 + player.secondAbilityDmgScaling * player.getLevel()) * player.landMultiplierDmg);
 
-        this.totalDamage = this.totalDamage + Math.round(deflectPercent * player.totalDamage
+        this.magicDamage = this.magicDamage + Math.round(deflectPercent * player.totalDamage
                 * raceMultiplierDmg * landMultiplierDmg);
 
     }

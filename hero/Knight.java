@@ -51,7 +51,8 @@ public class Knight extends Hero {
                 * Constants.KNIGHT_EXECUTE_HP_LIMIT_SCALE, Constants.KNIGHT_EXECUTE_HP_LIMIT_MAX);
 
         if (opponent.hp < opponent.hp * hpLimit) {
-            this.totalDamage = opponent.hp;
+            //this.totalDamage = opponent.hp;
+            this.magicDamage = opponent.hp; //TODO aici e o problema. pt ca o sa am dmg la P = opponent.hp + p.firstAbility*level etc. Ar trebui  sa fie doar dmgTotal = opponent.hp
             instantKill.apply(opponent);
         }
 

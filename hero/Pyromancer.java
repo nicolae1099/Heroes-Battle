@@ -45,6 +45,7 @@ public class Pyromancer extends Hero {
     }
     @Override
     public final void applyFirstAbility(final Hero opponent) {
+        magicDamage = 0;
     }
 
     @Override
