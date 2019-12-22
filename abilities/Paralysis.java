@@ -1,10 +1,10 @@
 package abilities;
 
-import hero.Knight;
-import hero.Pyromancer;
-import hero.Rogue;
-import hero.Wizard;
-import hero.Constants;
+import heroes.Knight;
+import heroes.Pyromancer;
+import heroes.Rogue;
+import heroes.Wizard;
+import heroes.Constants;
 
 public class Paralysis implements AmplifierByRace {
     public Paralysis() {

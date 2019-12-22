@@ -13,7 +13,7 @@ La fel si pt applySecondAbility();
 
 In pachetul abilities implementez Visitor Design Pattern.
 
-In pachetul hero am clasa Constants unde retin constante pt cei 4 eroi
+In pachetul heroes am clasa Constants unde retin constante pt cei 4 eroi
 Clasa Hero este o clasa abstracta care urmeaza sa fie extinsa de Knight, Rogue, Wizard, Pyromancer
 Clasa Hero are o metoda a face levelUp unui player si o metoda de a muta jucatorul la o noua pozitie.
 

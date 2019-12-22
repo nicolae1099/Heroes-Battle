@@ -1,6 +1,8 @@
 package main;
 
-import hero.Hero;
+import angels.Angel;
+import angels.AngelFactory;
+import heroes.Hero;
 
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ public final class Main {
         GameInput gameInput = gameInputLoader.load();
         ArrayList<Hero> players = gameInput.getPlayers();
         ArrayList<String> board = gameInput.getMatrix();
+        ArrayList<ArrayList<String>> angels = gameInput.getAngels();
         Arena arena = new Arena();
         for (int k = 0; k < gameInput.getMoves().size(); ++k) {
             for (Hero player : players) {
@@ -38,6 +41,26 @@ public final class Main {
                 for (int p = 0; p < players.size(); p++) {
                     players.get(i).levelUp();
                 }
+            }
+            for (String word : angels.get(k)) {
+                String[] namesList = word.split(",");
+                String typeOfAngel = namesList[0];
+                int rowPos = Integer.parseInt(namesList[1]);
+                int columnPos = Integer.parseInt(namesList[2]);
+                AngelFactory angelFactory =  new AngelFactory();
+                Angel angel = angelFactory.getInstance(typeOfAngel);
+                System.out.println(typeOfAngel);
+                for (Hero it : players) {
+                    if (it.getRowPos() == rowPos && it.getColumnPos() == columnPos) {
+                        System.out.println(it.getRace());
+                        System.out.println(it.firstAbilityRaceMultiplier);
+                        System.out.println(it.secondAbilityRaceMultiplier);
+                        it.accept(angel);
+                        System.out.println(it.firstAbilityRaceMultiplier);
+                        System.out.println(it.secondAbilityRaceMultiplier);
+                    }
+                }
+                        //TODO  de facut raceModifier pt fiecare abilitate si de testat
             }
         }
 

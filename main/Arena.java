@@ -1,5 +1,5 @@
 package main;
-import hero.Hero;
+import heroes.Hero;
 
 public class Arena {
     public Arena() {
@@ -21,11 +21,11 @@ public class Arena {
     }
 
     public final void fight(final Hero p, final Hero opponent) {
-        p.raceMultiplierDmg = opponent.isAttackedBy(p.firstAbility);
+        p.firstAbilityRaceMultiplier = opponent.isAttackedBy(p.firstAbility);
         p.applyFirstAbility(opponent);
         p.calculateDmgFirstAttack();
 
-        p.raceMultiplierDmg = opponent.isAttackedBy(p.secondAbility);
+        p.secondAbilityRaceMultiplier = opponent.isAttackedBy(p.secondAbility);
         p.applySecondAbility(opponent);
         p.calculateDmgSecondAttack();
 

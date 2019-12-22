@@ -1,6 +1,6 @@
 package effects;
 
-import hero.Hero;
+import heroes.Hero;
 
 public class DamageOverTime implements Effects {
     private int damage;

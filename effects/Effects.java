@@ -1,6 +1,6 @@
 package effects;
 
-import hero.Hero;
+import heroes.Hero;
 
 public interface Effects {
     void apply(Hero defender);

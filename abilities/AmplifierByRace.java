@@ -1,9 +1,9 @@
 package abilities;
 
-import hero.Knight;
-import hero.Pyromancer;
-import hero.Rogue;
-import hero.Wizard;
+import heroes.Knight;
+import heroes.Pyromancer;
+import heroes.Rogue;
+import heroes.Wizard;
 
 public interface AmplifierByRace {
     float visit(Pyromancer pyromancer);

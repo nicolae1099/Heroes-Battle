@@ -1,5 +1,5 @@
 package effects;
-import hero.Hero;
+import heroes.Hero;
 
 public class Stun implements Effects {
     private int duration;

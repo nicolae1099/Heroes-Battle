@@ -1,5 +1,5 @@
 package effects;
-import hero.Hero;
+import heroes.Hero;
 
 public final class InstantKill implements Effects {
     @Override

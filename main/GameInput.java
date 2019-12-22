@@ -1,6 +1,6 @@
 package main;
 
-import hero.Hero;
+import heroes.Hero;
 import java.util.ArrayList;
 
 public class GameInput {
@@ -8,6 +8,7 @@ public class GameInput {
     private ArrayList<String> matrix;
     private ArrayList<Hero> players;
     private ArrayList<String> moves;
+    private ArrayList<ArrayList<String>> angels;
     private int noRounds = 0;
     private int noPlayers = 0;
 
@@ -43,12 +44,22 @@ public class GameInput {
         this.noRounds = noRounds;
     }
 
+    public ArrayList<ArrayList<String>> getAngels() {
+        return angels;
+    }
+
+    public void setAngels(ArrayList<ArrayList<String>> angels) {
+        this.angels = angels;
+    }
+
     public GameInput(final ArrayList<String> matrix, final ArrayList<Hero> players,
-                     final ArrayList<String> moves, final int noPlayers, final int noRounds) {
+                     final ArrayList<String> moves, final int noPlayers, final int noRounds,
+                     final ArrayList<ArrayList<String>> angels) {
         setMatrix(matrix);
         setPlayers(players);
         setMoves(moves);
         setNoPlayers(noPlayers);
         setNoRounds(noRounds);
+        setAngels(angels);
     }
 }
