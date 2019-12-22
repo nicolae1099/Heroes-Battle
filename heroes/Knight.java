@@ -9,12 +9,13 @@ import effects.InstantKill;
 import effects.Stun;
 
 
-public class Knight extends Hero {
+public final class Knight extends Hero {
 
-    public Knight(final String race, final int rowPos, final int columnPos) {
+    public Knight(final String race, final int rowPos, final int columnPos, int id) {
         setRace(race);
         setRowPos(rowPos);
         setColumnPos(columnPos);
+        this.id = id;
 
         maxHp = Constants.KNIGHT_INITIAL_HP;
         hp = Constants.KNIGHT_INITIAL_HP;
@@ -32,12 +33,12 @@ public class Knight extends Hero {
     }
 
     @Override
-    public final float isAttackedBy(final AmplifierByRace amplifierByRace) {
+    public float isAttackedBy(final AmplifierByRace amplifierByRace) {
         return amplifierByRace.visit(this);
     }
 
     @Override
-    public final void setLandMultiplier(final String land) {
+    public void setLandMultiplier(final String land) {
         if (land.equals("L")) {
             landMultiplierDmg = Constants.LAND_MULTIPLIER_DMG;
         } else {
@@ -46,21 +47,23 @@ public class Knight extends Hero {
     }
 
     @Override
-    public final void applyFirstAbility(final Hero opponent) {
+    public void applyFirstAbility(final Hero opponent) {
         Effects instantKill = new InstantKill();
         float hpLimit = Math.min(Constants.KNIGHT_EXECUTE_HP_LIMIT + opponent.getLevel()
                 * Constants.KNIGHT_EXECUTE_HP_LIMIT_SCALE, Constants.KNIGHT_EXECUTE_HP_LIMIT_MAX);
 
         if (opponent.hp < opponent.hp * hpLimit) {
             //this.totalDamage = opponent.hp;
-            this.magicDamage = opponent.hp; //TODO aici e o problema. pt ca o sa am dmg la P = opponent.hp + p.firstAbility*level etc. Ar trebui  sa fie doar dmgTotal = opponent.hp
+            this.magicDamage = opponent.hp;
+            //TODO aici e o problema. pt ca o sa am dmg la P = opponent.hp+p.firstAbility*level etc
+            // Ar trebui  sa fie doar dmgTotal = opponent.hp
             instantKill.apply(opponent);
         }
 
     }
 
     @Override
-    public final void applySecondAbility(final Hero opponent) {
+    public void applySecondAbility(final Hero opponent) {
         Effects stun = new Stun(1);
         stun.apply(opponent);
     }
@@ -71,7 +74,29 @@ public class Knight extends Hero {
     }
 
     @Override
-    public final String toString() {
+    public void applyStrategy() {
+        int maxLevelHp = maxHp;
+        if ((Constants.QUARTER_OF * maxLevelHp) < hp && hp < (Constants.HALF_OF * maxLevelHp)) {
+            playAttackStrategy();
+        } else if (hp < (Constants.QUARTER_OF * maxLevelHp)) {
+            playDefenseStrategy();
+        }
+    }
+
+    @Override
+    public void playAttackStrategy() {
+        hp = hp - Math.round(Constants.FIFTH_OF * hp);
+        strategyRaceMultiplier += Constants.FIFTY_PRECENT;
+    }
+
+    @Override
+    public void playDefenseStrategy() {
+        hp = hp + Math.round(Constants.QUARTER_OF * hp);
+        strategyRaceMultiplier -= Constants.TWENTY_PERCENT;
+    }
+
+    @Override
+    public String toString() {
         if (hp <= 0) {
             return ("K" + " dead");
         } else {

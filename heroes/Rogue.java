@@ -8,11 +8,12 @@ import effects.DamageOverTime;
 import effects.Effects;
 import effects.Stun;
 
-public class Rogue extends Hero {
-    public Rogue(final String race, final int rowPos, final int columnPos) {
+public final class Rogue extends Hero {
+    public Rogue(final String race, final int rowPos, final int columnPos, int id) {
         setRace(race);
         setRowPos(rowPos);
         setColumnPos(columnPos);
+        this.id = id;
 
         maxHp = Constants.ROGUE_INITIAL_HP;
         hp = Constants.ROGUE_INITIAL_HP;
@@ -29,12 +30,12 @@ public class Rogue extends Hero {
         secondAbility = new Paralysis();
     }
     @Override
-    public final float isAttackedBy(final AmplifierByRace amplifierByRace) {
+    public float isAttackedBy(final AmplifierByRace amplifierByRace) {
         return amplifierByRace.visit(this);
     }
 
     @Override
-    public final void setLandMultiplier(final String land) {
+    public void setLandMultiplier(final String land) {
         if (land.equals("W")) {
             landMultiplierDmg = Constants.WOODS_MULTIPLIER_DMG;
         } else {
@@ -43,7 +44,7 @@ public class Rogue extends Hero {
     }
 
     @Override
-    public final void applyFirstAbility(final Hero opponent) {
+    public void applyFirstAbility(final Hero opponent) {
         setCritickAttack(1.0f);
         if (backstabCount % Constants.BACKSTAB_CRITICAL_ROUND == 0) {
             if (landMultiplierDmg == Constants.WOODS_MULTIPLIER_DMG) {
@@ -56,7 +57,7 @@ public class Rogue extends Hero {
     }
 
     @Override
-    public final void applySecondAbility(final Hero opponent) {
+    public void applySecondAbility(final Hero opponent) {
         int duration = Constants.PARALYSIS_DURATION;
         if (landMultiplierDmg == Constants.WOODS_MULTIPLIER_DMG) {
             duration = Constants.PARALYSIS_DURATION_ON_WOODS;
@@ -64,8 +65,8 @@ public class Rogue extends Hero {
         Effects paralysis = new Stun(duration);
         paralysis.apply(opponent);
 
-        int damage = Math.round((secondAbilityDmg + secondAbilityDmgScaling * getLevel())
-                * secondAbilityRaceMultiplier * landMultiplierDmg);
+        int damage = Math.round(Math.round((secondAbilityDmg + secondAbilityDmgScaling * getLevel())
+                * landMultiplierDmg) * secondAbilityRaceMultiplier);
         Effects dmgOverTime = new DamageOverTime(damage, duration);
         dmgOverTime.apply(opponent);
     }
@@ -76,7 +77,22 @@ public class Rogue extends Hero {
     }
 
     @Override
-    public final String toString() {
+    public void applyStrategy() {
+
+    }
+
+    @Override
+    public void playAttackStrategy() {
+
+    }
+
+    @Override
+    public void playDefenseStrategy() {
+
+    }
+
+    @Override
+    public String toString() {
         if (hp <= 0) {
             return ("R" + " dead");
         } else {

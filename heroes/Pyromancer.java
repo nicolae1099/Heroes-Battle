@@ -8,11 +8,12 @@ import effects.DamageOverTime;
 import effects.Effects;
 
 
-public class Pyromancer extends Hero {
-    public Pyromancer(final String race, final int rowPos, final int columnPos) {
+public final class Pyromancer extends Hero {
+    public Pyromancer(final String race, final int rowPos, final int columnPos, int id) {
         setRace(race);
         setRowPos(rowPos);
         setColumnPos(columnPos);
+        this.id = id;
 
         maxHp = Constants.PYRO_INITIAL_HP;
         hp = Constants.PYRO_INITIAL_HP;
@@ -32,12 +33,12 @@ public class Pyromancer extends Hero {
 
     }
     @Override
-    public final float isAttackedBy(final AmplifierByRace amplifierByRace) {
+    public float isAttackedBy(final AmplifierByRace amplifierByRace) {
         return amplifierByRace.visit(this);
     }
 
     @Override
-    public final void setLandMultiplier(final String land) {
+    public void setLandMultiplier(final String land) {
         if (land.equals("V")) {
             landMultiplierDmg = Constants.VOLCANO_MULTIPLIER_DMG;
         } else {
@@ -45,15 +46,15 @@ public class Pyromancer extends Hero {
         }
     }
     @Override
-    public final void applyFirstAbility(final Hero opponent) {
+    public void applyFirstAbility(final Hero opponent) {
         magicDamage = 0;
     }
 
     @Override
-    public final void applySecondAbility(final Hero opponent) {
-        int dmgOverTimeDealt = Math.round((secondAbilityDamageOverTime
-                + (this.secondAbilityDamageOverTimeScaling * getLevel())) * secondAbilityRaceMultiplier
-                * landMultiplierDmg);
+    public void applySecondAbility(final Hero opponent) {
+        int dmgOverTimeDealt = Math.round(Math.round((secondAbilityDamageOverTime
+                + (secondAbilityDamageOverTimeScaling * getLevel())) * landMultiplierDmg)
+                * secondAbilityRaceMultiplier);
         Effects dmgOverTime = new DamageOverTime(dmgOverTimeDealt, 2);
         dmgOverTime.apply(opponent);
     }
@@ -64,7 +65,28 @@ public class Pyromancer extends Hero {
     }
 
     @Override
-    public final String toString() {
+    public void applyStrategy() {
+        if ((Constants.QUARTER_OF * maxHp) < hp && hp < (Constants.THIRD_OF * maxHp)) {
+            playAttackStrategy();
+        } else if (hp < Constants.QUARTER_OF * maxHp) {
+            playDefenseStrategy();
+        }
+    }
+
+    @Override
+    public void playAttackStrategy() {
+        hp = hp + Math.round(Constants.QUARTER_OF * hp);
+        strategyRaceMultiplier += Constants.SEVENTY_PRECENT;
+    }
+
+    @Override
+    public void playDefenseStrategy() {
+        strategyRaceMultiplier -= Constants.THIRTY_PRECENT;
+        hp = hp + Math.round(Constants.THIRD_OF * hp);
+    }
+
+    @Override
+    public String toString() {
         if (hp <= 0) {
             return ("P" + " dead");
         } else {

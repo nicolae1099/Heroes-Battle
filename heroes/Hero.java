@@ -2,6 +2,8 @@ package heroes;
 
 import abilities.AmplifierByRace;
 import angels.Angel;
+import observer.Observer;
+
 
 public abstract class Hero {
     private String race;
@@ -16,8 +18,10 @@ public abstract class Hero {
     public int physicalDamage;
     public float firstAbilityRaceMultiplier;
     public float secondAbilityRaceMultiplier;
+    public float strategyRaceMultiplier;
     public float landMultiplierDmg = 1.0f;
     public int hp;
+    public int id;
     public int maxHp;
     public int initialHp;
     public int hpIncreasePerLevel;
@@ -34,6 +38,7 @@ public abstract class Hero {
     public boolean deadFromDot;
     public AmplifierByRace firstAbility;
     public AmplifierByRace secondAbility;
+    public Observer observer = new Observer();
 
     public abstract float isAttackedBy(AmplifierByRace amplifierByRace);
     public abstract void setLandMultiplier(String land);
@@ -42,6 +47,10 @@ public abstract class Hero {
 
     public abstract void applySecondAbility(Hero opponent);
     public abstract void accept(Angel angel);
+
+    public abstract void applyStrategy();
+    public abstract void playAttackStrategy();
+    public abstract void playDefenseStrategy();
 
     public final void levelUp() {
         int localExp = this.exp;
@@ -63,6 +72,7 @@ public abstract class Hero {
             this.level = localLevel;
             this.hp = this.initialHp + (this.level * this.hpIncreasePerLevel);
             this.maxHp = this.hp;
+            notifyObserver(this);
         }
     }
 
@@ -70,8 +80,15 @@ public abstract class Hero {
         int nextLevel = getLevel() + 1;
         int expNecesarry = Constants.EXP_FOR_FIRST_LEVEL
                 + Constants.EXP_TO_LEVEL_UP * nextLevel;
-        setExp(expNecesarry);
-        setLevel(nextLevel);
+        exp = expNecesarry;
+        level = nextLevel;
+        hp = initialHp + (level * hpIncreasePerLevel);
+        maxHp = hp;
+        notifyObserver(this);
+    }
+
+    public final void notifyObserver(Hero player) {
+        observer.update(player);
     }
 
     public final boolean isAlive() {
@@ -82,13 +99,14 @@ public abstract class Hero {
     }
 
     public final void calculateDmgFirstAttack() {
-        physicalDamage = Math.round((firstAbilityDmg + firstAbilityDmgScaling * level)
-                * firstAbilityRaceMultiplier * landMultiplierDmg * critickAttack);
+        physicalDamage = Math.round(Math.round((firstAbilityDmg + firstAbilityDmgScaling * level)
+                * landMultiplierDmg) * firstAbilityRaceMultiplier * critickAttack);
     }
 
     public final void calculateDmgSecondAttack() {
-        physicalDamage = physicalDamage + Math.round((secondAbilityDmg + secondAbilityDmgScaling * level)
-                * secondAbilityRaceMultiplier * landMultiplierDmg);
+        physicalDamage = physicalDamage + Math.round(Math.round((secondAbilityDmg
+                + secondAbilityDmgScaling * level)
+                * landMultiplierDmg) * secondAbilityRaceMultiplier);
     }
     public final void calculateTotalDamage() {
         totalDamage = physicalDamage + magicDamage;

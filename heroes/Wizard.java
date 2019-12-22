@@ -6,11 +6,12 @@ import abilities.Deflect;
 import abilities.Drain;
 import angels.Angel;
 
-public class Wizard extends Hero {
-    public Wizard(final String race, final int rowPos, final int columnPos) {
+public final class Wizard extends Hero {
+    public Wizard(final String race, final int rowPos, final int columnPos, int id) {
         setRace(race);
         setRowPos(rowPos);
         setColumnPos(columnPos);
+        this.id = id;
 
         maxHp = Constants.WIZARD_INITIAL_HP;
         hp = Constants.WIZARD_INITIAL_HP;
@@ -21,12 +22,12 @@ public class Wizard extends Hero {
         secondAbility = new Deflect();
     }
     @Override
-    public final float isAttackedBy(final AmplifierByRace amplifierByRace) {
+    public float isAttackedBy(final AmplifierByRace amplifierByRace) {
         return amplifierByRace.visit(this);
     }
 
     @Override
-    public final void setLandMultiplier(final String land) {
+    public void setLandMultiplier(final String land) {
         if (land.equals("D")) {
             landMultiplierDmg = Constants.DESERT_MULTIPLIER_DMG;
         } else {
@@ -35,31 +36,31 @@ public class Wizard extends Hero {
     }
 
     @Override
-    public final void applyFirstAbility(final Hero opponent) {
+    public void applyFirstAbility(final Hero opponent) {
         float hpPercent = Constants.DRAIN_PRECENT + Constants.DRAIN_PRECENT_SCALE * getLevel();
-        magicDamage = (int) Math.round(hpPercent * firstAbilityRaceMultiplier
-                * Math.min(Constants.DRAIN_MAX_PROCENT * opponent.maxHp, opponent.hp)
-                * landMultiplierDmg);
+        magicDamage = (int) Math.round(Math.round(hpPercent * landMultiplierDmg
+                * Math.min(Constants.DRAIN_MAX_PROCENT * opponent.maxHp, opponent.hp))
+                * firstAbilityRaceMultiplier);
     }
 
     @Override
-    public final void applySecondAbility(final Hero opponent) {
+    public void applySecondAbility(final Hero opponent) {
         float deflectPercent = Math.min(Constants.DEFLECT_PERCENT
                 + Constants.DEFLECT_PERCENT_SCALE * getLevel(), Constants.DEFLECT_MAX_PERCENT);
         //daca oponentul nu a apucat sa atace, ii simulez atacul sau fara race multiplieri.
 
         Hero player = null;
         if (opponent.getRace().equals("P")) {
-            player = new Pyromancer("P", opponent.getRowPos(), opponent.getColumnPos());
+            player = new Pyromancer("P", opponent.getRowPos(), opponent.getColumnPos(), player.id);
         }
         if (opponent.getRace().equals("K")) {
-            player = new Knight("K", opponent.getRowPos(), opponent.getColumnPos());
+            player = new Knight("K", opponent.getRowPos(), opponent.getColumnPos(), player.id);
         }
         if (opponent.getRace().equals("W")) {
-            player = new Wizard("W", opponent.getRowPos(), opponent.getColumnPos());
+            player = new Wizard("W", opponent.getRowPos(), opponent.getColumnPos(), player.id);
         }
         if (opponent.getRace().equals("R")) {
-            player = new Rogue("R", getRowPos(), opponent.getColumnPos());
+            player = new Rogue("R", getRowPos(), opponent.getColumnPos(), player.id);
         }
         player.setLevel(opponent.getLevel());
         player.landMultiplierDmg = opponent.landMultiplierDmg;
@@ -84,8 +85,8 @@ public class Wizard extends Hero {
         player.totalDamage = player.totalDamage +  Math.round((player.secondAbilityDmg
                 + player.secondAbilityDmgScaling * player.getLevel()) * player.landMultiplierDmg);
 
-        this.magicDamage = this.magicDamage + Math.round(deflectPercent * player.totalDamage
-                * secondAbilityRaceMultiplier * landMultiplierDmg);
+        this.magicDamage = this.magicDamage + Math.round(Math.round(deflectPercent * player.totalDamage
+                * landMultiplierDmg) * secondAbilityRaceMultiplier);
 
     }
 
@@ -94,9 +95,24 @@ public class Wizard extends Hero {
         angel.visit(this);
     }
 
+    @Override
+    public void applyStrategy() {
+
+    }
 
     @Override
-    public final String toString() {
+    public void playAttackStrategy() {
+
+    }
+
+    @Override
+    public void playDefenseStrategy() {
+
+    }
+
+
+    @Override
+    public String toString() {
         if (hp <= 0) {
             return ("W" + " dead");
         } else {

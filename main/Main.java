@@ -3,7 +3,7 @@ package main;
 import angels.Angel;
 import angels.AngelFactory;
 import heroes.Hero;
-
+import observer.Observer;
 import java.util.ArrayList;
 
 
@@ -16,10 +16,13 @@ public final class Main {
         ArrayList<Hero> players = gameInput.getPlayers();
         ArrayList<String> board = gameInput.getMatrix();
         ArrayList<ArrayList<String>> angels = gameInput.getAngels();
+        Observer observer = new Observer();
         Arena arena = new Arena();
         for (int k = 0; k < gameInput.getMoves().size(); ++k) {
+            observer.update(k+1);
             for (Hero player : players) {
                 player.takeOverTimeDmg();
+                player.applyStrategy();
             }
 
             for (int j = 0; j < gameInput.getMoves().get(k).length(); ++j) {
@@ -49,22 +52,24 @@ public final class Main {
                 int columnPos = Integer.parseInt(namesList[2]);
                 AngelFactory angelFactory =  new AngelFactory();
                 Angel angel = angelFactory.getInstance(typeOfAngel);
-                System.out.println(typeOfAngel);
+                angel.notifyObserver(typeOfAngel, rowPos, columnPos);
                 for (Hero it : players) {
                     if (it.getRowPos() == rowPos && it.getColumnPos() == columnPos) {
-                        System.out.println(it.getRace());
-                        System.out.println(it.firstAbilityRaceMultiplier);
-                        System.out.println(it.secondAbilityRaceMultiplier);
-                        it.accept(angel);
-                        System.out.println(it.firstAbilityRaceMultiplier);
-                        System.out.println(it.secondAbilityRaceMultiplier);
+                        if (it.isAlive()) {
+                            it.accept(angel);
+                            angel.notifyObserver(typeOfAngel, it);
+                        } else if (typeOfAngel.equals("Spawner")) {
+                            it.accept(angel);
+                            angel.notifyObserver(typeOfAngel, it);
+                        }
                     }
                 }
-                        //TODO  de facut raceModifier pt fiecare abilitate si de testat
             }
+            observer.update();
         }
+        observer.update(players);
 
-        String filename = args[1];
+        /*String filename = args[1];
         try {
             fileio.implementations.FileWriter fileWriter =
                     new fileio.implementations.FileWriter(filename);
@@ -83,5 +88,7 @@ public final class Main {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
+
+         */
     }
 }
