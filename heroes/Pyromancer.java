@@ -66,9 +66,9 @@ public final class Pyromancer extends Hero {
 
     @Override
     public void applyStrategy() {
-        if ((Constants.QUARTER_OF * maxHp) < hp && hp < (Constants.THIRD_OF * maxHp)) {
+        if (Math.round(Constants.QUARTER_OF * maxHp) < hp && hp < Math.round(Constants.THIRD_OF * maxHp)) {
             playAttackStrategy();
-        } else if (hp < Constants.QUARTER_OF * maxHp) {
+        } else if (hp <= Constants.QUARTER_OF * maxHp) {
             playDefenseStrategy();
         }
     }

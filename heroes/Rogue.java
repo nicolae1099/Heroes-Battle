@@ -64,7 +64,7 @@ public final class Rogue extends Hero {
         }
         Effects paralysis = new Stun(duration);
         paralysis.apply(opponent);
-
+        //secondAbilityRaceMultiplier += angelsRaceMultiplier;
         int damage = Math.round(Math.round((secondAbilityDmg + secondAbilityDmgScaling * getLevel())
                 * landMultiplierDmg) * secondAbilityRaceMultiplier);
         Effects dmgOverTime = new DamageOverTime(damage, duration);
@@ -78,17 +78,24 @@ public final class Rogue extends Hero {
 
     @Override
     public void applyStrategy() {
+        if (Math.round(Constants.SEVENTH_OF * maxHp) < hp && hp < Math.round(Constants.FIFTH_OF * maxHp)) {
 
+            playAttackStrategy();
+        } else if (hp <= (Constants.SEVENTH_OF * maxHp)) {
+            playDefenseStrategy();
+        }
     }
 
     @Override
     public void playAttackStrategy() {
-
+        hp = hp  - Math.round(Constants.SEVENTH_OF * hp);
+        strategyRaceMultiplier += Constants.FORTY_PRECENT;
     }
 
     @Override
     public void playDefenseStrategy() {
-
+        strategyRaceMultiplier -= Constants.TEN_PERCENT;
+        hp = hp + Math.round(Constants.HALF_OF * hp);
     }
 
     @Override

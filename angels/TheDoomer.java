@@ -4,6 +4,7 @@ import heroes.Knight;
 import heroes.Pyromancer;
 import heroes.Rogue;
 import heroes.Wizard;
+import observer.Observer;
 
 public final class TheDoomer implements Angel {
     @Override

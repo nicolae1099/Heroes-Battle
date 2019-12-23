@@ -10,21 +10,21 @@ public final class LifeGiver implements Angel {
     // TODO ce se intampla daca un player are deja current hp == max hp?
     @Override
     public void visit(Knight knight) {
-        knight.hp += Constants.LIFE_GIVER_VS_KNIGHT_HP;
+        knight.hp = Math.min(knight.hp + Constants.LIFE_GIVER_VS_KNIGHT_HP, knight.maxHp);
     }
 
     @Override
     public void visit(Pyromancer pyromancer) {
-        pyromancer.hp += Constants.LIFE_GIVER_VS_PYRO_HP;
+        pyromancer.hp = Math.min(pyromancer.hp + Constants.LIFE_GIVER_VS_PYRO_HP, pyromancer.maxHp);
     }
 
     @Override
     public void visit(Rogue rogue) {
-        rogue.hp += Constants.LIFE_GIVER_VS_ROGUE_HP;
+        rogue.hp = Math.min(rogue.hp + Constants.LIFE_GIVER_VS_ROGUE_HP, rogue.maxHp);
     }
 
     @Override
     public void visit(Wizard wizard) {
-        wizard.hp += Constants.LIFE_GIVER_VS_WIZARD_HP;
+        wizard.hp = Math.min(wizard.hp + Constants.LIFE_GIVER_VS_WIZARD_HP, wizard.maxHp);
     }
 }

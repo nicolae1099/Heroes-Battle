@@ -2,10 +2,7 @@ package main;
 
 import fileio.FileSystem;
 import heroes.Hero;
-import heroes.Knight;
-import heroes.Pyromancer;
-import heroes.Rogue;
-import heroes.Wizard;
+import heroes.HeroFactory;
 
 import java.util.ArrayList;
 
@@ -40,25 +37,13 @@ public class GameInputLoader {
             // citirea pozitiei fiecarui jucator
             numPlayers = fs.nextInt();
             players = new ArrayList<>();
+            HeroFactory heroFactory = new HeroFactory();
             for (int i = 0; i < numPlayers; ++i) {
                 String race = fs.nextWord();
-                if (race.equals("P")) {
-                    players.add(new Pyromancer("P", fs.nextInt(),
-                            fs.nextInt(), i));
-                }
-                if (race.equals("K")) {
-                    players.add(new Knight("K", fs.nextInt(), fs.nextInt(), i));
-                }
-                if (race.equals("W")) {
-                    players.add(new Wizard("W", fs.nextInt(), fs.nextInt(), i));
-                }
-                if (race.equals("R")) {
-                    players.add(new Rogue("R", fs.nextInt(), fs.nextInt(), i));
-                }
+                players.add(heroFactory.getInstance(race, fs.nextInt(), fs.nextInt(), i));
             }
 
             // citirea mutarilor care vor fi executate de playeri
-
             numRounds = fs.nextInt();
             for (int i = 0; i < numRounds; ++i) {
                 moves.add(fs.nextWord());

@@ -76,9 +76,9 @@ public final class Knight extends Hero {
     @Override
     public void applyStrategy() {
         int maxLevelHp = maxHp;
-        if ((Constants.QUARTER_OF * maxLevelHp) < hp && hp < (Constants.HALF_OF * maxLevelHp)) {
+        if (Math.round(Constants.QUARTER_OF * maxLevelHp) < hp && hp < Math.round(Constants.HALF_OF * maxLevelHp)) {
             playAttackStrategy();
-        } else if (hp < (Constants.QUARTER_OF * maxLevelHp)) {
+        } else if (hp <= (Constants.QUARTER_OF * maxLevelHp)) {
             playDefenseStrategy();
         }
     }

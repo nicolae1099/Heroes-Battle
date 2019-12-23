@@ -4,6 +4,9 @@ import abilities.AmplifierByRace;
 import angels.Angel;
 import observer.Observer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 public abstract class Hero {
     private String race;
@@ -19,6 +22,7 @@ public abstract class Hero {
     public float firstAbilityRaceMultiplier;
     public float secondAbilityRaceMultiplier;
     public float strategyRaceMultiplier;
+    public float angelsRaceMultiplier;
     public float landMultiplierDmg = 1.0f;
     public int hp;
     public int id;
@@ -69,19 +73,23 @@ public abstract class Hero {
             }
         }
         if (localLevel > this.level) {
-            this.level = localLevel;
+            while (level < localLevel) {
+                level++;
+                notifyObserver(this);
+
+            }
+           // this.level = localLevel;
             this.hp = this.initialHp + (this.level * this.hpIncreasePerLevel);
             this.maxHp = this.hp;
-            notifyObserver(this);
+            //notifyObserver(this);
         }
     }
 
     public final void addExpToLevelUp() {
-        int nextLevel = getLevel() + 1;
         int expNecesarry = Constants.EXP_FOR_FIRST_LEVEL
-                + Constants.EXP_TO_LEVEL_UP * nextLevel;
+                + Constants.EXP_TO_LEVEL_UP * level;
         exp = expNecesarry;
-        level = nextLevel;
+        level++;
         hp = initialHp + (level * hpIncreasePerLevel);
         maxHp = hp;
         notifyObserver(this);
@@ -104,9 +112,13 @@ public abstract class Hero {
     }
 
     public final void calculateDmgSecondAttack() {
-        physicalDamage = physicalDamage + Math.round(Math.round((secondAbilityDmg
-                + secondAbilityDmgScaling * level)
-                * landMultiplierDmg) * secondAbilityRaceMultiplier);
+        physicalDamage = (int) (physicalDamage + roundHalfDown(Math.round((secondAbilityDmg
+                        + secondAbilityDmgScaling * level)
+                        * landMultiplierDmg) * secondAbilityRaceMultiplier));
+    }
+    public static double roundHalfDown(double d) {
+        return new BigDecimal(d).setScale(0, RoundingMode.HALF_DOWN)
+                .doubleValue();
     }
     public final void calculateTotalDamage() {
         totalDamage = physicalDamage + magicDamage;

@@ -15,27 +15,35 @@ public class Arena {
         p.hp -= opponent.totalDamage;
         opponent.hp -= p.totalDamage;
 
-        if (opponent.hp > 0 && p.hp <= 0 && !p.deadFromDot) {
-            notifyObservers(p, opponent);
-            opponent.setExperience(p.getLevel());
-        }
-        if (p.hp > 0 && opponent.hp <= 0 && !opponent.deadFromDot) {
+        if (opponent.hp <= 0 && !opponent.deadFromDot) {
+            if (p.hp > 0) {
+                p.setExperience(opponent.getLevel());
+            }
             notifyObservers(opponent, p);
-            p.setExperience(opponent.getLevel());
+        }
+
+        if (p.hp <= 0 && !p.deadFromDot) {
+            if (opponent.hp > 0) {
+                opponent.setExperience(p.getLevel());
+            }
+            notifyObservers(p, opponent);
         }
     }
 
     public final void fight(final Hero p, final Hero opponent) {
         p.firstAbilityRaceMultiplier = opponent.isAttackedBy(p.firstAbility);
-        if (p.firstAbilityRaceMultiplier != 1.0f) {
+        if (Float.compare(p.firstAbilityRaceMultiplier, 1.0f) != 0) {
             p.firstAbilityRaceMultiplier += p.strategyRaceMultiplier;
+            p.firstAbilityRaceMultiplier += p.angelsRaceMultiplier;
         }
         p.applyFirstAbility(opponent);
         p.calculateDmgFirstAttack();
 
         p.secondAbilityRaceMultiplier = opponent.isAttackedBy(p.secondAbility);
-        if (p.secondAbilityRaceMultiplier != 1.0f) {
+        if (Float.compare(p.secondAbilityRaceMultiplier, 1.0f) != 0
+                && Float.compare(p.secondAbilityRaceMultiplier, 0.0f) != 0) {
             p.secondAbilityRaceMultiplier += p.strategyRaceMultiplier;
+            p.secondAbilityRaceMultiplier += p.angelsRaceMultiplier;
         }
         p.applySecondAbility(opponent);
         p.calculateDmgSecondAttack();

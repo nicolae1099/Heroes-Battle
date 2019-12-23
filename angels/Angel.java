@@ -19,4 +19,7 @@ public interface Angel {
     default void notifyObserver(String typeOfAngel, Hero player) {
         OBSERVER.update(typeOfAngel, player);
     }
+    default void notifyObserver(Hero player, int hp, String typeOfAngel) {
+        OBSERVER.update(player, hp, typeOfAngel);
+    }
 }

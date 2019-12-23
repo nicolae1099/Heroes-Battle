@@ -2,14 +2,27 @@ package observer;
 
 import heroes.Hero;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public final class Observer {
-    public void update(int round) {
-        System.out.println("~~ Round " + round + " ~~");
+    String filename;
+    public void update(String filename) {
+        this.filename = filename;
     }
-
-    public void update() {
+    public void update(int round) {
+        try {
+            fileio.implementations.FileWriter fileWriter =
+                    new fileio.implementations.FileWriter(filename);
+            fileWriter.writeWord("~~ Round " + round + " ~~");
+            fileWriter.writeNewLine();
+            //System.out.println("~~ Round " + round + " ~~");
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+        public void update() {
         System.out.println("");
     }
     public void update(Hero dead, Hero killer) {
@@ -26,6 +39,17 @@ public final class Observer {
         } else {
             System.out.println(typeofAngel + " helped " + convert(player.getRace())
                     + " " + player.id);
+        }
+    }
+
+    public void update(Hero player, int hp, String typeOfAngel) {
+        if (hp <= 0) {
+            System.out.println("Player " + convert(player.getRace())
+                    + " " + player.id + " was killed by an angel");
+        }
+        if (hp > 0 && typeOfAngel.equals("Spawner")) {
+            System.out.println("Player " + convert(player.getRace())
+                    + " " + player.id + " was brought to life by an angel");
         }
     }
 
