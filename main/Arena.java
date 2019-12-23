@@ -3,10 +3,10 @@ import heroes.Hero;
 import observer.Observer;
 
 public class Arena {
-    public Observer observer = new Observer();
+    public Observer observer;
 
-    public Arena() {
-
+    public Arena(Observer observer) {
+        this.observer = observer;
     }
     public final void battle(final Hero p, final Hero opponent) {
         fight(p, opponent);

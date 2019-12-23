@@ -42,7 +42,11 @@ public abstract class Hero {
     public boolean deadFromDot;
     public AmplifierByRace firstAbility;
     public AmplifierByRace secondAbility;
-    public Observer observer = new Observer();
+    public Observer observer;
+
+    public final void registerObserver(Observer observere) {
+        this.observer = observere;
+    }
 
     public abstract float isAttackedBy(AmplifierByRace amplifierByRace);
     public abstract void setLandMultiplier(String land);
@@ -135,7 +139,7 @@ public abstract class Hero {
         secondAbilityRaceMultiplier += amount;
     }
     public final void takeOverTimeDmg() {
-        if (dotDuration == 0) {
+        if (dotDuration <= 0) {
             dmgToBeTaken = 0;
         }
         hp = hp - dmgToBeTaken;

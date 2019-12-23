@@ -91,7 +91,7 @@ public final class Wizard extends Hero {
     public void applyStrategy() {
         if (Math.round(Constants.QUARTER_OF * maxHp) < hp && hp < Math.round(Constants.HALF_OF * maxHp)) {
             playAttackStrategy();
-        } else if (hp <= Constants.QUARTER_OF * maxHp) {
+        } else if (hp < Math.round(Constants.QUARTER_OF * maxHp)) {
             playDefenseStrategy();
         }
     }
@@ -105,7 +105,7 @@ public final class Wizard extends Hero {
     @Override
     public void playDefenseStrategy() {
         strategyRaceMultiplier -= Constants.TWENTY_PERCENT;
-        hp += Math.round(Constants.FIFTH_OF * hp);
+        hp += (int)(Constants.FIFTH_OF * hp);
     }
 
 

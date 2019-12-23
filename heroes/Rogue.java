@@ -79,9 +79,8 @@ public final class Rogue extends Hero {
     @Override
     public void applyStrategy() {
         if (Math.round(Constants.SEVENTH_OF * maxHp) < hp && hp < Math.round(Constants.FIFTH_OF * maxHp)) {
-
             playAttackStrategy();
-        } else if (hp <= (Constants.SEVENTH_OF * maxHp)) {
+        } else if (hp < Math.round(Constants.SEVENTH_OF * maxHp)) {
             playDefenseStrategy();
         }
     }
@@ -95,7 +94,7 @@ public final class Rogue extends Hero {
     @Override
     public void playDefenseStrategy() {
         strategyRaceMultiplier -= Constants.TEN_PERCENT;
-        hp = hp + Math.round(Constants.HALF_OF * hp);
+        hp = hp + (int)(Constants.HALF_OF * hp);
     }
 
     @Override

@@ -76,22 +76,24 @@ public final class Knight extends Hero {
     @Override
     public void applyStrategy() {
         int maxLevelHp = maxHp;
-        if (Math.round(Constants.QUARTER_OF * maxLevelHp) < hp && hp < Math.round(Constants.HALF_OF * maxLevelHp)) {
+        if (Math.round(Constants.THIRD_OF * maxLevelHp) < hp && hp < Math.round(Constants.HALF_OF * maxLevelHp)) {
             playAttackStrategy();
-        } else if (hp <= (Constants.QUARTER_OF * maxLevelHp)) {
+        } else if (hp < Math.round(Constants.THIRD_OF * maxLevelHp)) {
             playDefenseStrategy();
         }
     }
 
     @Override
     public void playAttackStrategy() {
+       // System.out.println("ATTTTTTTTTACK BAAAA" +"id " + id +" hp " + hp );
         hp = hp - Math.round(Constants.FIFTH_OF * hp);
         strategyRaceMultiplier += Constants.FIFTY_PRECENT;
     }
 
     @Override
     public void playDefenseStrategy() {
-        hp = hp + Math.round(Constants.QUARTER_OF * hp);
+       // System.out.println("APARAAAA DUKADAMMM" +"id " + id +" hp " + hp );
+        hp = hp + (int)(Constants.QUARTER_OF * hp);
         strategyRaceMultiplier -= Constants.TWENTY_PERCENT;
     }
 

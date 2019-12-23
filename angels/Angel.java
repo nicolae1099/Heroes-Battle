@@ -12,14 +12,13 @@ public interface Angel {
     void visit(Pyromancer pyromancer);
     void visit(Rogue rogue);
     void visit(Wizard wizard);
-    Observer OBSERVER = new Observer();
-    default void notifyObserver(String typeOfAngel, int rowPos, int colPos) {
-        OBSERVER.update(typeOfAngel, rowPos, colPos);
+    default void notifyObserver(String typeOfAngel, int rowPos, int colPos, Observer observer) {
+        observer.update(typeOfAngel, rowPos, colPos);
     }
-    default void notifyObserver(String typeOfAngel, Hero player) {
-        OBSERVER.update(typeOfAngel, player);
+    default void notifyObserver(String typeOfAngel, Hero player, Observer observer) {
+        observer.update(typeOfAngel, player);
     }
-    default void notifyObserver(Hero player, int hp, String typeOfAngel) {
-        OBSERVER.update(player, hp, typeOfAngel);
+    default void notifyObserver(Hero player, int hp, String typeOfAngel, Observer observer) {
+        observer.update(player, hp, typeOfAngel);
     }
 }

@@ -16,24 +16,21 @@ public final class Main {
         ArrayList<Hero> players = gameInput.getPlayers();
         ArrayList<String> board = gameInput.getMatrix();
         ArrayList<ArrayList<String>> angels = gameInput.getAngels();
-        Observer observer = new Observer();
-        Arena arena = new Arena();
+        Observer observer = new Observer(args[1]);
+        Arena arena = new Arena(observer);
         for (int k = 0; k < gameInput.getMoves().size(); ++k) {
             observer.update(k+1);
             for (Hero player : players) {
                 player.takeOverTimeDmg();
-               // player.applyStrategy();
             }
-           // System.out.println(gameInput.getMoves().get(k).length());
             for (int j = 0; j < gameInput.getMoves().get(k).length(); ++j) {
+                players.get(j).registerObserver(observer);
                 char c = gameInput.getMoves().get(k).charAt(j);
                 if (!players.get(j).stun && players.get(j).isAlive()) {
                     players.get(j).applyStrategy();
                 }
                 if (players.get(j).isAlive()) {
                     players.get(j).movePositionIfPossible(String.valueOf(c));
-                   // System.out.println(j);
-                   // System.out.println(players.get(j).getColumnPos());
                     if (players.get(j).getColumnPos() >= 0 && players.get(j).getRowPos() >= 0) {
                         String landType = String.valueOf(board.get(players.get(j).getRowPos()).
                                 charAt(players.get(j).getColumnPos()));
@@ -62,17 +59,17 @@ public final class Main {
                 int columnPos = Integer.parseInt(namesList[2]);
                 AngelFactory angelFactory =  new AngelFactory();
                 Angel angel = angelFactory.getInstance(typeOfAngel);
-                angel.notifyObserver(typeOfAngel, rowPos, columnPos);
+                angel.notifyObserver(typeOfAngel, rowPos, columnPos, observer);
                 for (Hero it : players) {
                     if (it.getRowPos() == rowPos && it.getColumnPos() == columnPos) {
                         if (it.isAlive() && !typeOfAngel.equals("Spawner")) {
-                            angel.notifyObserver(typeOfAngel, it);
+                            angel.notifyObserver(typeOfAngel, it, observer);
                             it.accept(angel);
-                            angel.notifyObserver(it, it.hp, typeOfAngel);
+                            angel.notifyObserver(it, it.hp, typeOfAngel, observer);
                         } else if (!it.isAlive() && typeOfAngel.equals("Spawner")) {
-                            angel.notifyObserver(typeOfAngel, it);
+                            angel.notifyObserver(typeOfAngel, it, observer);
                             it.accept(angel);
-                            angel.notifyObserver(it, it.hp, typeOfAngel);
+                            angel.notifyObserver(it, it.hp, typeOfAngel, observer);
                         }
                     }
                 }
