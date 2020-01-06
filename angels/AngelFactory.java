@@ -2,7 +2,7 @@ package angels;
 
 public class AngelFactory {
 
-    public Angel getInstance(String typeOfAngel) {
+    public final Angel getInstance(final String typeOfAngel) {
         if (typeOfAngel.equals("DamageAngel")) {
             return new DamageAngel();
         } else if (typeOfAngel.equals("DarkAngel")) {
@@ -24,8 +24,8 @@ public class AngelFactory {
         } else if (typeOfAngel.equals("XPAngel")) {
             return new XPAngel();
         } else {
-            System.out.println("Unknown type of angel"); //TODO de facut cu try-catch later
+            System.out.println("Unknown type of angel");
         }
-        return new XPAngel();
+        return null;
     }
 }

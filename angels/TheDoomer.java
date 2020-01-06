@@ -4,26 +4,25 @@ import heroes.Knight;
 import heroes.Pyromancer;
 import heroes.Rogue;
 import heroes.Wizard;
-import observer.Observer;
 
 public final class TheDoomer implements Angel {
     @Override
-    public void visit(Knight knight) {
+    public void visit(final Knight knight) {
         knight.hp = 0;
     }
 
     @Override
-    public void visit(Pyromancer pyromancer) {
+    public void visit(final Pyromancer pyromancer) {
         pyromancer.hp = 0;
     }
 
     @Override
-    public void visit(Rogue rogue) {
+    public void visit(final Rogue rogue) {
         rogue.hp = 0;
     }
 
     @Override
-    public void visit(Wizard wizard) {
+    public void visit(final Wizard wizard) {
         wizard.hp = 0;
     }
 }

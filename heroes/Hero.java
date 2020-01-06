@@ -9,23 +9,14 @@ import java.math.RoundingMode;
 
 
 public abstract class Hero {
-    private String race;
-    private int rowPos;
-    private int columnPos;
-    private int level;
-    private int exp;
-    private float critickAttack;
-    public int backstabCount;
+
     public int totalDamage;
-    public int magicDamage;
-    public int physicalDamage;
     public float firstAbilityRaceMultiplier;
     public float secondAbilityRaceMultiplier;
     public float strategyRaceMultiplier;
     public float angelsRaceMultiplier;
     public float landMultiplierDmg = 1.0f;
     public int hp;
-    public int id;
     public int maxHp;
     public int initialHp;
     public int hpIncreasePerLevel;
@@ -35,16 +26,26 @@ public abstract class Hero {
     public int secondAbilityDmgScaling;
     public int secondAbilityDamageOverTime;
     public int secondAbilityDamageOverTimeScaling;
-    public int dotDuration;
-    public int stunDuration;
-    public int dmgToBeTaken;
-    public boolean stun;
-    public boolean deadFromDot;
     public AmplifierByRace firstAbility;
     public AmplifierByRace secondAbility;
-    public Observer observer;
 
-    public final void registerObserver(Observer observere) {
+    private Observer observer;
+    private int id;
+    private int magicDamage;
+    private int physicalDamage;
+    private String race;
+    private int rowPos;
+    private int columnPos;
+    private int level;
+    private int exp;
+    private float critickAttack;
+    private boolean stun;
+    private int backstabCount;
+    private int dotDuration;
+    private int stunDuration;
+    private int dmgToBeTaken;
+
+    public final void registerObserver(final Observer observere) {
         this.observer = observere;
     }
 
@@ -57,8 +58,6 @@ public abstract class Hero {
     public abstract void accept(Angel angel);
 
     public abstract void applyStrategy();
-    public abstract void playAttackStrategy();
-    public abstract void playDefenseStrategy();
 
     public final void levelUp() {
         int localExp = this.exp;
@@ -82,10 +81,8 @@ public abstract class Hero {
                 notifyObserver(this);
 
             }
-           // this.level = localLevel;
             this.hp = this.initialHp + (this.level * this.hpIncreasePerLevel);
             this.maxHp = this.hp;
-            //notifyObserver(this);
         }
     }
 
@@ -99,7 +96,7 @@ public abstract class Hero {
         notifyObserver(this);
     }
 
-    public final void notifyObserver(Hero player) {
+    private void notifyObserver(final Hero player) {
         observer.update(player);
     }
 
@@ -120,7 +117,7 @@ public abstract class Hero {
                         + secondAbilityDmgScaling * level)
                         * landMultiplierDmg) * secondAbilityRaceMultiplier));
     }
-    public static double roundHalfDown(double d) {
+    public static double roundHalfDown(final double d) {
         return new BigDecimal(d).setScale(0, RoundingMode.HALF_DOWN)
                 .doubleValue();
     }
@@ -134,19 +131,13 @@ public abstract class Hero {
         exp = exp + Math.max(0, Constants.EXP_FORMULA1
                 - (level - opponentLevel) * Constants.EXP_FORMULA2);
     }
-    public final void addRaceMultiplier(float amount) {
-        firstAbilityRaceMultiplier += amount;
-        secondAbilityRaceMultiplier += amount;
-    }
     public final void takeOverTimeDmg() {
         if (dotDuration <= 0) {
             dmgToBeTaken = 0;
         }
         hp = hp - dmgToBeTaken;
-        deadFromDot = false;
         if (hp <= 0) {
             totalDamage = 0;
-            deadFromDot = true;
         }
         dotDuration--;
     }
@@ -177,7 +168,6 @@ public abstract class Hero {
                 break;
         }
     }
-
 
     public final String getRace() {
         return race;
@@ -224,5 +214,51 @@ public abstract class Hero {
 
     public final  void setCritickAttack(final float critickAttack) {
         this.critickAttack = critickAttack;
+    }
+
+    public final int getId() {
+        return id;
+    }
+
+    public final void setId(final int id) {
+        this.id = id;
+    }
+    public final int getMagicDamage() {
+        return magicDamage;
+    }
+
+    public final void setMagicDamage(final int magicDamage) {
+        this.magicDamage = magicDamage;
+    }
+    public final boolean isStun() {
+        return stun;
+    }
+
+    public final void setStun(final boolean stun) {
+        this.stun = stun;
+    }
+
+    public final int getBackstabCount() {
+        return backstabCount;
+    }
+
+    public final void setBackstabCount(final int backstabCount) {
+        this.backstabCount = backstabCount;
+    }
+
+    public final int getDotDuration() {
+        return dotDuration;
+    }
+
+    public final void setDotDuration(final int dotDuration) {
+        this.dotDuration = dotDuration;
+    }
+
+    public final void setStunDuration(final int stunDuration) {
+        this.stunDuration = stunDuration;
+    }
+
+    public final void setDmgToBeTaken(final int dmgToBeTaken) {
+        this.dmgToBeTaken = dmgToBeTaken;
     }
 }

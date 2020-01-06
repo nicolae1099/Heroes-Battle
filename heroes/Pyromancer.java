@@ -6,14 +6,19 @@ import abilities.Ignite;
 import angels.Angel;
 import effects.DamageOverTime;
 import effects.Effects;
+import strategies.PyromancerAttackStrategy;
+import strategies.PyromancerDefenseStrategy;
+import strategies.Strategy;
 
 
 public final class Pyromancer extends Hero {
-    public Pyromancer(final String race, final int rowPos, final int columnPos, int id) {
+    private Strategy attackStrategy = new PyromancerAttackStrategy();
+    private Strategy defenseStrategy = new PyromancerDefenseStrategy();
+    public Pyromancer(final String race, final int rowPos, final int columnPos, final int id) {
         setRace(race);
         setRowPos(rowPos);
         setColumnPos(columnPos);
-        this.id = id;
+        setId(id);
 
         maxHp = Constants.PYRO_INITIAL_HP;
         hp = Constants.PYRO_INITIAL_HP;
@@ -47,7 +52,7 @@ public final class Pyromancer extends Hero {
     }
     @Override
     public void applyFirstAbility(final Hero opponent) {
-        magicDamage = 0;
+        setMagicDamage(0);
     }
 
     @Override
@@ -60,29 +65,18 @@ public final class Pyromancer extends Hero {
     }
 
     @Override
-    public void accept(Angel angel) {
+    public void accept(final Angel angel) {
         angel.visit(this);
     }
 
     @Override
     public void applyStrategy() {
-        if (Math.round(Constants.QUARTER_OF * maxHp) < hp && hp < Math.round(Constants.THIRD_OF * maxHp)) {
-            playAttackStrategy();
+        if (Math.round(Constants.QUARTER_OF * maxHp) < hp
+                && hp < Math.round(Constants.THIRD_OF * maxHp)) {
+            attackStrategy.applyTo(this);
         } else if (hp < Math.round(Constants.QUARTER_OF * maxHp)) {
-            playDefenseStrategy();
+            defenseStrategy.applyTo(this);
         }
-    }
-
-    @Override
-    public void playAttackStrategy() {
-        hp = hp - Math.round(Constants.QUARTER_OF * hp);
-        strategyRaceMultiplier += Constants.SEVENTY_PRECENT;
-    }
-
-    @Override
-    public void playDefenseStrategy() {
-        strategyRaceMultiplier -= Constants.THIRTY_PRECENT;
-        hp = hp + (int)(Constants.THIRD_OF * hp);
     }
 
     @Override

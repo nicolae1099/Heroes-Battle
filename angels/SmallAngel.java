@@ -7,26 +7,27 @@ import heroes.Wizard;
 
 public final class SmallAngel implements Angel {
     @Override
-    public void visit(Knight knight) {
+    public void visit(final Knight knight) {
         knight.angelsRaceMultiplier += Constants.SMALL_ANGEL_VS_KNIGHT_DMG;
-        knight.hp += Constants.SMALL_ANGEL_VS_KNIGHT_HP;
+        knight.hp = Math.min(knight.maxHp, knight.hp + Constants.SMALL_ANGEL_VS_KNIGHT_HP);
     }
 
     @Override
-    public void visit(Pyromancer pyromancer) {
+    public void visit(final Pyromancer pyromancer) {
         pyromancer.angelsRaceMultiplier += Constants.SMALL_ANGEL_VS_PYRO_DMG;
-        pyromancer.hp += Constants.SMALL_ANGEL_VS_PYRO_HP;
+        pyromancer.hp = Math.min(pyromancer.maxHp,
+                pyromancer.hp + Constants.SMALL_ANGEL_VS_PYRO_HP);
     }
 
     @Override
-    public void visit(Rogue rogue) {
+    public void visit(final Rogue rogue) {
         rogue.angelsRaceMultiplier += Constants.SMALL_ANGEL_VS_ROGUE_DMG;
-        rogue.hp += Constants.SMALL_ANGEL_VS_ROGUE_HP;
+        rogue.hp = Math.min(rogue.maxHp, rogue.hp + Constants.SMALL_ANGEL_VS_ROGUE_HP);
     }
 
     @Override
-    public void visit(Wizard wizard) {
+    public void visit(final Wizard wizard) {
         wizard.angelsRaceMultiplier += Constants.SMALL_ANGEL_VS_WIZARD_DMG;
-        wizard.hp += Constants.SMALL_ANGEL_VS_WIZARD_HP;
+        wizard.hp = Math.min(wizard.maxHp, wizard.hp + Constants.SMALL_ANGEL_VS_KNIGHT_HP);
     }
 }

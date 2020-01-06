@@ -8,7 +8,7 @@ public class Stun implements Effects {
     }
     @Override
     public final void apply(final Hero defender) {
-        defender.stunDuration = duration;
-        defender.stun = true;
+        defender.setStunDuration(duration);
+        defender.setStun(true);
     }
 }

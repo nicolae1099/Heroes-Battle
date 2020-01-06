@@ -14,29 +14,30 @@ public final class Main {
         GameInputLoader gameInputLoader = new GameInputLoader(args[0], args[1]);
         GameInput gameInput = gameInputLoader.load();
         ArrayList<Hero> players = gameInput.getPlayers();
-        ArrayList<String> board = gameInput.getMatrix();
+        BattleMap battleMap = BattleMap.getInstance();
+        battleMap.getInstance().setBattleground(gameInput.getMatrix());
         ArrayList<ArrayList<String>> angels = gameInput.getAngels();
         Observer observer = new Observer(args[1]);
         Arena arena = new Arena(observer);
         for (int k = 0; k < gameInput.getMoves().size(); ++k) {
-            observer.update(k+1);
+            observer.update(k + 1);
             for (Hero player : players) {
                 player.takeOverTimeDmg();
             }
             for (int j = 0; j < gameInput.getMoves().get(k).length(); ++j) {
                 players.get(j).registerObserver(observer);
                 char c = gameInput.getMoves().get(k).charAt(j);
-                if (!players.get(j).stun && players.get(j).isAlive()) {
+                if (!players.get(j).isStun() && players.get(j).isAlive()) {
                     players.get(j).applyStrategy();
                 }
                 if (players.get(j).isAlive()) {
                     players.get(j).movePositionIfPossible(String.valueOf(c));
                     if (players.get(j).getColumnPos() >= 0 && players.get(j).getRowPos() >= 0) {
+                        ArrayList<String>  board = BattleMap.getInstance().getBattleground();
                         String landType = String.valueOf(board.get(players.get(j).getRowPos()).
                                 charAt(players.get(j).getColumnPos()));
                         players.get(j).setLandMultiplier(landType);
                     }
-
                 }
             }
             for (int i = 0; i < players.size(); ++i) {
@@ -48,9 +49,10 @@ public final class Main {
                         }
                     }
                 }
-                for (int p = 0; p < players.size(); p++) {
-                    players.get(i).levelUp();
-                }
+            }
+            for (int p = 0; p < players.size(); p++) {
+                //System.out.println(players.get(p).hp);
+                players.get(p).levelUp();
             }
             for (String word : angels.get(k)) {
                 String[] namesList = word.split(",");
@@ -66,7 +68,8 @@ public final class Main {
                             angel.notifyObserver(typeOfAngel, it, observer);
                             it.accept(angel);
                             angel.notifyObserver(it, it.hp, typeOfAngel, observer);
-                        } else if (!it.isAlive() && typeOfAngel.equals("Spawner")) {
+                        }
+                        if (!it.isAlive() && typeOfAngel.equals("Spawner")) {
                             angel.notifyObserver(typeOfAngel, it, observer);
                             it.accept(angel);
                             angel.notifyObserver(it, it.hp, typeOfAngel, observer);
@@ -77,27 +80,5 @@ public final class Main {
             observer.update();
         }
         observer.update(players);
-
-        /*String filename = args[1];
-        try {
-            fileio.implementations.FileWriter fileWriter =
-                    new fileio.implementations.FileWriter(filename);
-            for (Hero it : players) {
-                if (it.hp <= 0) {
-                    fileWriter.writeWord(it.getRace() + " dead");
-                    fileWriter.writeNewLine();
-                } else {
-                    fileWriter.writeWord((it.getRace() + " " + it.getLevel()
-                            + " " + it.getExp() + " " + (int) it.hp + " "
-                            + it.getRowPos() + " " + it.getColumnPos()));
-                    fileWriter.writeNewLine();
-                }
-            }
-            fileWriter.close();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-
-         */
     }
 }

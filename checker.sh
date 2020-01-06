@@ -29,10 +29,10 @@ function compileHomework
 function checkTest
 {
     echo -ne "Test\t$1\t.....................................\t"
-    java main.Main "$RESOURCES_DIRECTORY/in/$1.in" "$RESOURCES_DIRECTORY/out/$1.out" > "$RESOURCES_DIRECTORY/out/$1.out"
+    java main.Main "$RESOURCES_DIRECTORY/in/$1.in" "$RESOURCES_DIRECTORY/out/$1.out" > /dev/null
 
 	if [ $? -eq 0 ]; then
-        `diff -Bw -u --ignore-all-space $RESOURCES_DIRECTORY/out/$1.out $RESOURCES_DIRECTORY/res/$1.in.res &> /dev/null`
+        `diff -Bw -u --ignore-all-space "$RESOURCES_DIRECTORY/out/$1.out" "$RESOURCES_DIRECTORY/res/$1.in.res" &> /dev/null`
         DIFF_RESULT=$?
 
         if [ $DIFF_RESULT -eq 0 ]; then

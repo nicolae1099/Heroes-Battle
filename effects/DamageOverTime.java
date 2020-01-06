@@ -12,8 +12,7 @@ public class DamageOverTime implements Effects {
 
     @Override
     public final void apply(final Hero defender) {
-        defender.dmgToBeTaken = damage;
-        defender.stunDuration = duration;
-        defender.dotDuration = duration;
+        defender.setDmgToBeTaken(damage);
+        defender.setDotDuration(duration);
     }
 }

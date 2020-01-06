@@ -44,11 +44,11 @@ public class GameInput {
         this.noRounds = noRounds;
     }
 
-    public ArrayList<ArrayList<String>> getAngels() {
+    public final ArrayList<ArrayList<String>> getAngels() {
         return angels;
     }
 
-    public void setAngels(ArrayList<ArrayList<String>> angels) {
+    public final void setAngels(final ArrayList<ArrayList<String>> angels) {
         this.angels = angels;
     }
 
