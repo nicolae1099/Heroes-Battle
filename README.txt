@@ -1,24 +1,29 @@
-NITU NICOLAE IULIAN 321CA TEMA2 POO
+Nitu Nicolae Iulian TEMA3 POO
 
-In main ma folosesc de clasele GameInputLoader si GameInput pt a citi input din fisier.
-La inceputul fiecarei runde, setez multiplicatorul de teren si jucatorii primesc damage over time.
-Apoi mut toti jucatorii. Daca 2 jucatori ajung pe aceiasi parcela, ei se vor batea. ( functia battle).
+La codul de la etapa1, am adaugat pachetul Angels, pachetul observer si pachetul strategies.
 
-In functia Battle() din clasa Arena, se calculeaza daunele care urmeaza sa le dea un jucator contra celuilalt jucator.
-In functia Battle() folosesc functia fight() care apeleaza metoda isAttackedBy(). Scopul metodei isAttackedBy() este
-returnarea race multiplier-ului. Oponentul este atacat de prima abilitate a atacatorului si apoi se calculeaza un damage
-, la care se va adauga damage ul obtinut cu race multiplierul de la a 2a abilitate.
-Functia battle() mai foloseste si functia applyFirstAbility() care adauga un efect ( damage over time, paralysis, stun)
-La fel si pt applySecondAbility();
+In pachetul Angels am creat o interfata Angel si implementez Visitor Pattern.
+    Cu ajutorul interfetei Angel implementez fiecare inger , care va vizita fiecare erou si ii va modifica hp/exp/dmg etc.
+    Am realizat si un AngelFactory
 
-In pachetul abilities implementez Visitor Design Pattern.
+In pachetul Strategies:
+    Am creat o interfata comuna pt strategii
+    Cele 8 clase implementeaza strategiile conform cerintei.
 
-In pachetul heroes am clasa Constants unde retin constante pt cei 4 eroi
-Clasa Hero este o clasa abstracta care urmeaza sa fie extinsa de Knight, Rogue, Wizard, Pyromancer
-Clasa Hero are o metoda a face levelUp unui player si o metoda de a muta jucatorul la o noua pozitie.
+In pachetul Observer:
+    In clasa Observer implementez observer design pattern. Unde am facut overload pe metoda update pt fiecare situatie.
+    Spre ex, daca apelez functia update cu 2 playeri inseamna ca unul l-a omorat pe celalalt. Daca apelez functia cu un
+    player si cu un inger, inseamna ca acel inger a ajutat/incurcat respectivul jucator, etc.
+    Fiecare inger este observat de catre Observer. Toti jucatorii sunt observati de catre Observer.
 
-metoda applyFirstAbility si applySecondAbility e implementata diferit in clasa fiecarui erou.
-In clasa Wizzard la applySecondAbility() creez un erou nou, simular cu oponentul, ca sa simulez atacul oponentului
-fara sa modific totalDamage ul oponentului.
+In pachetul Hero:
+    Am adaugat un HeroFactory
 
+In main:
+    Am facut harta Singleton
+    In main, inputul este citit in clasa GameInput. Apoi jucatorii iau dmg overTime, incerc sa ii mut daca nu au stun,
+    setez landModifierul, aplic strategia corespunzatoare. Daca 2 jucatori se afla pe aceiasi pozitie, atunci ei se vor
+    batea. Dupa ce se bat, vin ingerii care ii ajuta/ incurca si runda se incheie.
+
+Am 18 erori de CS, toate din cauza campurilor publice din clasa Hero.
 

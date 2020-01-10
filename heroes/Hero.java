@@ -81,8 +81,10 @@ public abstract class Hero {
                 notifyObserver(this);
 
             }
-            this.hp = this.initialHp + (this.level * this.hpIncreasePerLevel);
-            this.maxHp = this.hp;
+            if (this.hp > 0) {
+                this.hp = this.initialHp + (this.level * this.hpIncreasePerLevel);
+                this.maxHp = this.hp;
+            }
         }
     }
 

@@ -24,9 +24,11 @@ public class GameInputLoader {
         int rowDim = 0;
         int numPlayers = 0;
         int numRounds = 0;
+        int colDim;
         try {
             FileSystem fs = new FileSystem(mInputPath, mOutputPath);
             rowDim = fs.nextInt();
+            colDim = fs.nextInt();
             // setarea mapei cu Volacano,Land etc
             for (int i = 0; i < rowDim; ++i) {
                 matrix.add(fs.nextWord());

@@ -6,8 +6,6 @@ import heroes.Rogue;
 import heroes.Wizard;
 
 public final class LifeGiver implements Angel {
-    //TODO creste hp ul curent sau max hp ul? sau ambele?
-    // TODO ce se intampla daca un player are deja current hp == max hp?
     @Override
     public void visit(final Knight knight) {
         knight.hp = Math.min(knight.hp + Constants.LIFE_GIVER_VS_KNIGHT_HP, knight.maxHp);

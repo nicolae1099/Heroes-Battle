@@ -4,7 +4,6 @@ public final class Constants {
     private Constants() {
 
     }
-    //TODO sa nu uit sa tratez cazul la Knight cu Execute = 0% (FORUM)
     public static final float DAMAGE_ANGEL_VS_KNIGHT_DMG = 0.15F;
     public static final float DAMAGE_ANGEL_VS_PYRO_DMG  = 0.20F;
     public static final float DAMAGE_ANGEL_VS_ROGUE_DMG  = 0.30F;

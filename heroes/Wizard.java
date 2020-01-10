@@ -81,9 +81,11 @@ public final class Wizard extends Hero {
         opponentClone.totalDamage += Math.round((opponentClone.secondAbilityDmg
                 + opponentClone.secondAbilityDmgScaling * opponentClone.getLevel())
                 * opponentClone.landMultiplierDmg);
-
+        System.out.println("OPPONNET DEALT " + opponentClone.totalDamage);
+        //System.out.println(this.getMagicDamage());
         setMagicDamage(getMagicDamage() + Math.round(deflectPercent * opponentClone.totalDamage
                 * landMultiplierDmg * secondAbilityRaceMultiplier));
+        System.out.println("DEFLECT" + this.getMagicDamage());
     }
 
     @Override
